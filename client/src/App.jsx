@@ -14,20 +14,37 @@ import ShoppingCheckout from "./pages/shopping-view/checkout";
 import ShoppingListing from "./pages/shopping-view/listing";
 import ShoppingAccount from "./pages/shopping-view/account";
 import NotFound from "./pages/not-found";
+import CheckAuth from "./components/common/check-auth";
+import UnauthPage from "./pages/unauth.jsx";
 
 function App() {
+  const isAuthenticated = false;
+  const user = null;
+
   const router = createBrowserRouter([
     {
+      path: "/",
+      element: <CheckAuth isAuthenticated={isAuthenticated} user={user} />
+    },
+    {
       path: "/auth",
-      element: <AuthLayout />,
+      element: (
+        <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+          <AuthLayout />
+        </CheckAuth>
+      ),
       children: [
-        { path: "login", element: <AuthLogin /> },
-        { path: "register", element: <AuthRegister /> }
+        { path: "register", element: <AuthRegister /> },
+        { path: "login", element: <AuthLogin /> }
       ]
     },
     {
       path: "/admin",
-      element: <AdminLayout />,
+      element: (
+        <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+          <AdminLayout />
+        </CheckAuth>
+      ),
       children: [
         { path: "dashboard", element: <AdminDashboard /> },
         { path: "products", element: <AdminProducts /> },
@@ -36,13 +53,17 @@ function App() {
       ]
     },
     {
-      path: "/",
-      element: <ShoppingLayout />,
+      path: "/shop",
+      element: (
+        <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+          <ShoppingLayout />
+        </CheckAuth>
+      ),
       children: [
         { path: "home", element: <ShoppingHome /> },
         { path: "listing", element: <ShoppingListing /> },
         { path: "checkout", element: <ShoppingCheckout /> },
-        { path: "account", element: <ShoppingAccount /> },
+        { path: "account", element: <ShoppingAccount /> }
         // { path: "paypal-return", element: <PaypalReturnPage /> },
         // { path: "payment-success", element: <PaymentSuccessPage /> },
         // { path: "search", element: <SearchProducts /> }
@@ -52,10 +73,10 @@ function App() {
       path: "*",
       element: <NotFound />
     },
-    // {
-    //   path: "/unauth-page",
-    //   element: <UnauthPage />
-    // }
+    {
+      path: "/unauth-page",
+      element: <UnauthPage />
+    }
   ]);
   return (
     <div className="flex flex-col overflow-hidden bg-white">
