@@ -2,8 +2,9 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import { connectUsingMongoose } from "./config/db.js";
-import cookieParser from "cookieParser";
+import cookieParser from "cookie-parser";
 import cors from "cors";
+import userRouter from "./src/features/users/user.routes.js";
 
 const server = express();
 const port = process.env.PORT;
@@ -24,6 +25,9 @@ server.use(
 );
 server.use(cookieParser());
 server.use(express.json());
+
+//userRouter
+server.use("/api/user", userRouter);
 
 server.get("/", (req, res) => {
   res.send("Welcome to the ecommerce application");
