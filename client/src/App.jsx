@@ -1,7 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
-import AuthLogin from "./pages/auth/login";
-import AuthRegister from "./pages/auth/register";
+import AuthLogin from "./pages/auth/login/login";
+import AuthRegister from "./pages/auth/register/register";
 import { RouterProvider } from "react-router-dom";
 import AdminLayout from "./components/admin-view/layout";
 import AdminDashboard from "./pages/admin-view/dashboard";

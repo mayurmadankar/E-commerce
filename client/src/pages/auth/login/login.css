@@ -1,0 +1,46 @@
+.auth-login-container {
+  display: flex;
+  justify-content: flex-end; /* Push content to the right */
+  align-items: center;
+  width: 50%;
+  min-height: 100vh; /* Full height */
+  padding: 0 2rem; /* Optional padding */
+  background-color: #f9f9f9; /* Light background for contrast */
+}
+
+.auth-login {
+  width: 100%;
+  max-width: 28rem;
+  background: #ffffff; /* White background for the form */
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.auth-login-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.auth-login-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937; /* Neutral dark gray */
+  margin-bottom: 0.5rem;
+}
+
+.auth-login-header p {
+  font-size: 0.875rem;
+  color: #4b5563; /* Gray for secondary text */
+}
+
+.auth-login-link {
+  font-weight: 500;
+  margin-left: 0.5rem;
+  color: #6366f1; /* Indigo */
+  text-decoration: none;
+}
+
+.auth-login-link:hover {
+  text-decoration: underline;
+}
