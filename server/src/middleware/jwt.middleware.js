@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
-// import { blackListedToken } from "../features/user/user.controller.js";
 
 const jwtAuth = (req, res, next) => {
-  const token = req.headers["authorization"];
+  const token = res.cookie.jwtToken;
 
   if (!token) return res.status(401).send("No token, authorization denied");
 

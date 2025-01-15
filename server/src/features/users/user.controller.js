@@ -8,30 +8,30 @@ export default class UserController {
   }
   async register(req, res) {
     try {
-      const { userName, emailId, password } = req.body;
+      const { userName, email, password } = req.body;
 
       const hashPassword = await bcrypt.hash(password, 12);
       // Check if the user is already registered
-      const existingUser = await this.userRepository.findByEmail(emailId);
+      const existingUser = await this.userRepository.findByEmail(email);
       if (existingUser) {
         return res.status(400).send("User already registered.");
       }
 
       const userCreated = await this.userRepository.register(
         userName,
-        emailId,
+        email,
         hashPassword
       );
       if (userCreated) {
         res.status(201).send({
           success: true,
-          message: "user created successfully ",
+          message: "Registration Successfull ",
           data: userCreated
         });
       } else {
         res.status(400).send({
           success: false,
-          message: "user is not created"
+          message: "Registration Failed"
         });
       }
     } catch (error) {
@@ -39,31 +39,38 @@ export default class UserController {
     }
   }
   async login(req, res) {
-    const { emailId, password } = req.body;
+    const { email, password } = req.body;
 
     try {
       // Check if user exists
-      const user = await this.userRepository.findByEmail(emailId);
+      const user = await this.userRepository.findByEmail(email);
       if (!user) {
-        return res.status(400).send({ success: false, message: "Email does not exist!" });
+        return res
+          .status(400)
+          .send({ success: false, message: "Email does not exist!" });
       }
 
       // Compare password with hashed password
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
-        return res.status(400).send({ success: false, message: "Invalid credentials" });
+        return res
+          .status(400)
+          .send({ success: false, message: "Invalid credentials" });
       }
 
       // Generate JWT token
       const token = jwt.sign(
-        { userId: user._id, emailId: user.emailId },
+        { userId: user._id, email: user.email },
         process.env.JWT_SECRET,
         { expiresIn: "6h" }
       );
+      res
+        .status(201)
+        .cookie("jwtToken", token, { maxAge: 900000, httpOnly: false });
 
       return res.status(200).send({
         success: true,
-        message: "User has been logged in!",
+        message: "Login Succesfull!",
         data: { token }
       });
     } catch (error) {
