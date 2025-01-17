@@ -60,19 +60,22 @@ export default class UserController {
 
       // Generate JWT token
       const token = jwt.sign(
-        { userId: user._id, email: user.email },
+        { userId: user._id, role: user.role, email: user.email },
         process.env.JWT_SECRET,
         { expiresIn: "6h" }
       );
       res
         .status(201)
-        .cookie("jwtToken", token, { maxAge: 900000, httpOnly: false });
-
-      return res.status(200).send({
-        success: true,
-        message: "Login Succesfull!",
-        data: { token }
-      });
+        .cookie("jwtToken", token, { maxAge: 900000, httpOnly: false })
+        .json({
+          success: true,
+          message: "Login Successfully",
+          user: {
+            email: user.email,
+            role: user.role,
+            userId: user._id
+          }
+        });
     } catch (error) {
       console.error(error);
       return res.status(500).send({
