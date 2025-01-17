@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import "../register/register.css";
-import { useToast } from "@/components/ui/use-toast";
-import { registerUser, resetToast } from "@/store/auth-slice/authSlice";
+import { ToastContainer, toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { registerUser } from "@/store/auth-slice/authSlice";
 
 const initialState = {
   userName: "",
@@ -17,30 +18,40 @@ function AuthRegister() {
   const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { toast } = useToast();
 
   function onSubmit(event) {
     event.preventDefault();
     dispatch(registerUser(formData)).then((data) => {
+      console.log(data);
       if (data?.payload?.success) {
-        // console.log(data?.payload?.message);
-        toast({
-          title: data?.payload?.message
+        console.log(data?.payload?.message);
+        toast.success(data?.payload?.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+          transition: Bounce
         });
         navigate("/auth/login");
       } else {
-        toast({
-          title: data?.payload?.message,
-          variant: "destructive"
+        // console.log(data?.payload?.message);
+        toast.error(data?.payload?.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "dark",
+          transition: Bounce
         });
       }
-      // setTimeout(() => {
-      //   dispatch(resetToast());
-      // }, 2000);
     });
   }
-
-  // console.log(formData);
 
   return (
     <div className="form-container">

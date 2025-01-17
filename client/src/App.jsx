@@ -16,11 +16,11 @@ import ShoppingAccount from "./pages/shopping-view/account";
 import NotFound from "./pages/not-found";
 import CheckAuth from "./components/common/check-auth";
 import UnauthPage from "./pages/unauth.jsx";
+import { useSelector } from "react-redux";
+import { authSelector } from "./store/auth-slice/authSlice";
 
 function App() {
-  const isAuthenticated = false;
-  const user = null;
-
+  const { user, isAuthenticated } = useSelector(authSelector);
   const router = createBrowserRouter([
     {
       path: "/",
@@ -34,7 +34,10 @@ function App() {
         </CheckAuth>
       ),
       children: [
-        { path: "register", element: <AuthRegister /> },
+        {
+          path: "register",
+          element: <AuthRegister />
+        },
         { path: "login", element: <AuthLogin /> }
       ]
     },
