@@ -6,6 +6,7 @@ export default class UserController {
   constructor() {
     this.userRepository = new UserRepository();
   }
+  //registered functionality
   async register(req, res) {
     try {
       const { userName, email, password } = req.body;
@@ -38,6 +39,7 @@ export default class UserController {
       console.log(error);
     }
   }
+  //Login functionality
   async login(req, res) {
     const { email, password } = req.body;
 
@@ -74,7 +76,8 @@ export default class UserController {
             email: user.email,
             role: user.role,
             userId: user._id
-          }
+          },
+          token
         });
     } catch (error) {
       console.error(error);
@@ -83,5 +86,12 @@ export default class UserController {
         message: "Internal Server Error"
       });
     }
+  }
+  //logout functioality
+  async logout(req, res) {
+    res.clearCookie("jwtToken").json({
+      success: true,
+      message: "Logged out successfully!"
+    });
   }
 }
