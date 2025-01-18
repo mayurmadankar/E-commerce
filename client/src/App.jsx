@@ -16,11 +16,23 @@ import ShoppingAccount from "./pages/shopping-view/account";
 import NotFound from "./pages/not-found";
 import CheckAuth from "./components/common/check-auth";
 import UnauthPage from "./pages/unauth.jsx";
-import { useSelector } from "react-redux";
-import { authSelector } from "./store/auth-slice/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { authSelector, checkAuth } from "./store/auth-slice/authSlice";
+import { useEffect } from "react";
+import Loader from "./components/loader/loader";
 
 function App() {
-  const { user, isAuthenticated } = useSelector(authSelector);
+  const { user, isAuthenticated, isLoading } = useSelector(authSelector);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <Loader />;
+  }
   const router = createBrowserRouter([
     {
       path: "/",
