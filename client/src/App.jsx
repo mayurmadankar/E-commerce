@@ -33,6 +33,9 @@ function App() {
   if (isLoading) {
     return <Loader />;
   }
+
+  console.log(isLoading, user);
+  
   const router = createBrowserRouter([
     {
       path: "/",

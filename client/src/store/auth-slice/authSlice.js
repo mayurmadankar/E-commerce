@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 const initialState = {
   isAuthenticated: false,
@@ -134,4 +134,4 @@ const authSlice = createSlice({
 });
 export const { setUser, resetToast } = authSlice.actions;
 export default authSlice.reducer;
-export const authSelector = ((state) => state.auth);
+export const authSelector = (state) => state.auth;
