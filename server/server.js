@@ -1,11 +1,13 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
-import { connectUsingMongoose } from "./config/db.js";
+import { connectUsingMongoose } from "./src/config/db.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import userRouter from "./src/features/users/user.routes.js";
 import session from "express-session";
+import ProductRouter from "./src/features/admin/products.router.js";
+import { errorHandlerMiddleware } from "./src/middleware/applicationError.middleware.js";
 
 const server = express();
 const port = process.env.PORT;
@@ -42,6 +44,11 @@ server.use(express.json());
 
 //userRouter
 server.use("/api/user", userRouter);
+
+//productRouter
+server.use("/api/admin/products", ProductRouter);
+
+server.use(errorHandlerMiddleware);
 
 server.get("/", (req, res) => {
   res.send("Welcome to the ecommerce application");
