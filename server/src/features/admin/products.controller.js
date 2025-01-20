@@ -50,7 +50,7 @@ export default class ProductController {
         res.status(201).json({
           success: true,
           message: "Product is Created",
-          data: newlyCreatedProduct
+          data: result
         });
       } else {
         res.status(400).json({
