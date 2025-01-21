@@ -49,40 +49,56 @@ function AdminProducts() {
 
   function onSubmit(event) {
     event.preventDefault();
-    dispatch(
-      addNewProduct({
-        ...formData,
-        image: uploadedImageUrl
-      })
-    ).then((data) => {
+    currentEditedId !== null
+      ? dispatch(
+          editProduct({
+            id: currentEditedId,
+            formData
+          })
+        ).then((data) => {
+          console.log(data, "edit");
+
+          if (data?.payload?.success) {
+            dispatch(fetchAllProducts());
+            setFormData(initialFormData);
+            setOpenCreateProductsDialog(false);
+            setCurrentEditedId(null);
+          }
+        })
+      : dispatch(
+          addNewProduct({
+            ...formData,
+            image: uploadedImageUrl
+          })
+        ).then((data) => {
+          if (data?.payload?.success) {
+            // Close the form and reset all states
+            setOpenCreateProductsDialog(false);
+            setImageFile(null);
+            setUploadedImageUrl("");
+            setFormData(initialFormData);
+            dispatch(fetchAllProducts());
+            toast.success("Product added successfully!");
+          } else {
+            toast.error("Failed to add product. Please try again.");
+          }
+        });
+  }
+
+  function handleDelete(getCurrentProductId) {
+    dispatch(deleteProduct(getCurrentProductId)).then((data) => {
       if (data?.payload?.success) {
-        // Close the form and reset all states
-        setOpenCreateProductsDialog(false);
-        setImageFile(null);
-        setUploadedImageUrl("");
-        setFormData(initialFormData);
         dispatch(fetchAllProducts());
-        toast.success("Product added successfully!");
-      } else {
-        toast.error("Failed to add product. Please try again.");
       }
     });
   }
 
-  // function handleDelete(getCurrentProductId) {
-  //   dispatch(deleteProduct(getCurrentProductId)).then((data) => {
-  //     if (data?.payload?.success) {
-  //       dispatch(fetchAllProducts());
-  //     }
-  //   });
-  // }
-
-  // function isFormValid() {
-  //   return Object.keys(formData)
-  //     .filter((currentKey) => currentKey !== "averageReview")
-  //     .map((key) => formData[key] !== "")
-  //     .every((item) => item);
-  // }
+  function isFormValid() {
+    return Object.keys(formData)
+      .filter((currentKey) => currentKey !== "averageReview")
+      .map((key) => formData[key] !== "")
+      .every((item) => item);
+  }
 
   useEffect(() => {
     dispatch(fetchAllProducts());
@@ -93,7 +109,10 @@ function AdminProducts() {
   return (
     <Fragment>
       <div className="mb-5 w-full flex justify-end">
-        <Button className="bg-black text-white" onClick={() => setOpenCreateProductsDialog(true)}>
+        <Button
+          className="bg-black text-white"
+          onClick={() => setOpenCreateProductsDialog(true)}
+        >
           Add New Product
         </Button>
       </div>
@@ -105,7 +124,7 @@ function AdminProducts() {
                 setOpenCreateProductsDialog={setOpenCreateProductsDialog}
                 setCurrentEditedId={setCurrentEditedId}
                 product={productItem}
-                // handleDelete={handleDelete}
+                handleDelete={handleDelete}
               />
             ))
           : null}
@@ -114,7 +133,7 @@ function AdminProducts() {
         open={openCreateProductsDialog}
         onOpenChange={() => {
           setOpenCreateProductsDialog(false);
-          // setCurrentEditedId(null);
+          setCurrentEditedId(null);
           setFormData(initialFormData);
         }}
       >
@@ -140,7 +159,7 @@ function AdminProducts() {
               setFormData={setFormData}
               buttonText={currentEditedId !== null ? "Edit" : "Add"}
               formControls={addProductFormElements}
-              // isBtnDisabled={!isFormValid()}
+              isBtnDisabled={!isFormValid()}
             />
           </div>
         </SheetContent>
