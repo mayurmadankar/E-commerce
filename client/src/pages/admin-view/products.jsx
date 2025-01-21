@@ -1,5 +1,5 @@
 import ProductImageUpload from "@/components/admin-view/image-upload";
-// import AdminProductTile from "@/components/admin-view/product-tile";
+import AdminProductTile from "@/components/admin-view/product-tile";
 import CommonForm from "@/components/common/form";
 import { Button } from "@/components/ui/button";
 import {
@@ -88,27 +88,27 @@ function AdminProducts() {
     dispatch(fetchAllProducts());
   }, [dispatch]);
 
-  console.log(productList, uploadedImageUrl, "productList");
+  console.log(formData, "productList");
 
   return (
     <Fragment>
       <div className="mb-5 w-full flex justify-end">
-        <Button onClick={() => setOpenCreateProductsDialog(true)}>
+        <Button className="bg-black text-white" onClick={() => setOpenCreateProductsDialog(true)}>
           Add New Product
         </Button>
       </div>
       <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {/* {productList && productList.length > 0
+        {productList && productList.length > 0
           ? productList.map((productItem) => (
               <AdminProductTile
                 setFormData={setFormData}
                 setOpenCreateProductsDialog={setOpenCreateProductsDialog}
                 setCurrentEditedId={setCurrentEditedId}
                 product={productItem}
-                handleDelete={handleDelete}
+                // handleDelete={handleDelete}
               />
             ))
-          : null} */}
+          : null}
       </div>
       <Sheet
         open={openCreateProductsDialog}
@@ -120,7 +120,9 @@ function AdminProducts() {
       >
         <SheetContent side="right" className="overflow-auto bg-white">
           <SheetHeader>
-            <SheetTitle>Add New Product</SheetTitle>
+            <SheetTitle>
+              {currentEditedId !== null ? "Edit Product" : "Add New Product"}
+            </SheetTitle>
           </SheetHeader>
           <ProductImageUpload
             imageFile={imageFile}
@@ -129,14 +131,14 @@ function AdminProducts() {
             setUploadedImageUrl={setUploadedImageUrl}
             setImageLoadingState={setImageLoadingState}
             imageLoadingState={imageLoadingState}
-            // isEditMode={currentEditedId !== null}
+            isEditMode={currentEditedId !== null}
           />
           <div className="py-6">
             <CommonForm
               onSubmit={onSubmit}
               formData={formData}
               setFormData={setFormData}
-              buttonText="Add"
+              buttonText={currentEditedId !== null ? "Edit" : "Add"}
               formControls={addProductFormElements}
               // isBtnDisabled={!isFormValid()}
             />
