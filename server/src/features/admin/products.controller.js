@@ -5,6 +5,7 @@ export default class ProductController {
   constructor() {
     this.repository = new ProductRepository();
   }
+  //file upload middleware
   async handleImageUpload(req, res, next) {
     try {
       const b64 = Buffer.from(req.file.buffer).toString("base64");
@@ -19,6 +20,7 @@ export default class ProductController {
       next(error);
     }
   }
+  //add single product
   async addProducts(req, res, next) {
     try {
       const {
@@ -83,7 +85,7 @@ export default class ProductController {
       next(error);
     }
   }
-  //edit and product
+  //edit an product
   async editProduct(req, res) {
     try {
       const { id } = req.params;
