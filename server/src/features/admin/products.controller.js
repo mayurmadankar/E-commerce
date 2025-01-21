@@ -35,7 +35,7 @@ export default class ProductController {
         averageReview
       } = req.body;
 
-      console.log(averageReview, "averageReview");
+      // console.log(averageReview, "averageReview");
 
       const result = await this.repository.addProduct(
         image,
@@ -86,7 +86,7 @@ export default class ProductController {
     }
   }
   //edit an product
-  async editProduct(req, res) {
+  async editProduct(req, res, next) {
     try {
       const { id } = req.params;
       const {
@@ -131,7 +131,7 @@ export default class ProductController {
     }
   }
   // delete a specific product using product id
-  async deleteProduct(req, res) {
+  async deleteProduct(req, res, next) {
     try {
       const { id } = req.params;
 

@@ -75,9 +75,11 @@ export default class ProductRepository {
   async deleteProduct(id) {
     try {
       const deleted = await ProductModel.findByIdAndDelete(id);
+      // console.log(deleted);
       if (!deleted) {
-        throw new Error("Product not Found");
+        throw new ApplicationError("Product not found");
       }
+      return true;
     } catch (error) {
       throw new ApplicationError(error.message, 500);
     }
